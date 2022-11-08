@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -51,17 +52,31 @@ public class BigQueryMapperGenerator : IIncrementalGenerator
         static void Execute(Compilation compilation, ImmutableArray<ClassDeclarationSyntax> classes,
             SourceProductionContext context)
         {
-            if (classes.IsDefaultOrEmpty)
-                return;
-
-            var distinctClasses = classes.Distinct();
-
-            var classesToGenerate = GetTypesToGenerate(compilation, distinctClasses, context.CancellationToken);
-
-            foreach (var classToGenerate in classesToGenerate)
+            try
             {
-                var result = GeneratePartialClass(classToGenerate);
-                context.AddSource($"{classToGenerate.RowClass.Name}.g.cs", SourceText.From(result, Encoding.UTF8));
+                if (classes.IsDefaultOrEmpty)
+                    return;
+
+                var distinctClasses = classes.Distinct();
+
+                var classesToGenerate = GetTypesToGenerate(compilation, distinctClasses, context.CancellationToken);
+
+                foreach (var classToGenerate in classesToGenerate)
+                {
+                    var result = GeneratePartialClass(classToGenerate);
+                    context.AddSource($"{classToGenerate.RowClass.Name}.g.cs", SourceText.From(result, Encoding.UTF8));
+                }
+            }
+            catch (Exception e)
+            {
+                var descriptor = new DiagnosticDescriptor(id: "BQD001",
+                    title: "Error creating bigquery mapper",
+                    messageFormat: "{0} {1}",
+                    category: "BigQueryMapperGenerator",
+                    DiagnosticSeverity.Error,
+                    isEnabledByDefault: true);
+
+                context.ReportDiagnostic(Diagnostic.Create(descriptor, null, e.Message, e.StackTrace));
             }
         }
     }
@@ -72,6 +87,7 @@ public class BigQueryMapperGenerator : IIncrementalGenerator
     {
         foreach (var @class in classes)
         {
+            Debug.WriteLine($"Checking class {@class}");
             ct.ThrowIfCancellationRequested();
             var semanticModel = compilation.GetSemanticModel(@class.SyntaxTree);
             if (semanticModel.GetDeclaredSymbol(@class) is not INamedTypeSymbol classSymbol)
@@ -86,14 +102,22 @@ public class BigQueryMapperGenerator : IIncrementalGenerator
                     {
                         if (propertySymbol.SetMethod is not null)
                         {
-                            var columnAttributeName = propertySymbol.GetAttributes().FirstOrDefault(a =>
-                                    a.AttributeClass!.ToDisplayString() == typeof(ColumnAttribute).FullName)
-                                ?.NamedArguments
-                                .Cast<KeyValuePair<string, TypedConstant>?>()
-                                .DefaultIfEmpty(null)
-                                .FirstOrDefault(na => na!.Value.Key == nameof(ColumnAttribute.Name))
-                                ?.Value.Value as string;
-                            var columnName = columnAttributeName ?? propertySymbol.Name;
+                            var columnName = propertySymbol.Name;
+                            var columnAttribute = propertySymbol.GetAttributes().FirstOrDefault(a =>
+                                a.AttributeClass!.ToDisplayString() == typeof(ColumnAttribute).FullName);
+                            if (columnAttribute is not null)
+                            {
+                                if (!columnAttribute.NamedArguments.IsDefaultOrEmpty)
+                                {
+                                    var nameArg = columnAttribute.NamedArguments
+                                        .FirstOrDefault(n => n.Key == nameof(ColumnAttribute.Name));
+                                    if (nameArg.Value.Value is string name)
+                                    {
+                                        columnName = name;
+                                    }
+                                }
+                            }
+
                             info.Properties.Add((columnName, propertySymbol));
                         }
                     }
@@ -121,12 +145,19 @@ namespace {c.RowClass.ContainingNamespace.Name}
         foreach (var (columnName, property) in c.Properties)
         {
             // would like to check if key exists but don't see any sort of ContainsKey implemented on BigQueryRow
+            var tempName = $"___{property.Name}";
+            var basePropertyType = property.Type.WithNullableAnnotation(NullableAnnotation.None).ToDisplayString();
+            if (basePropertyType.EndsWith("?"))
+            {
+                basePropertyType = basePropertyType.Substring(default, basePropertyType.Length - 1);
+            }
+
             sb.Append($@"
-                {property.Name} = row[""{columnName}""],");
+                {property.Name} = row[""{columnName}""] is {basePropertyType} {tempName} ? {tempName} : default,");
         }
 
         sb.Append($@"
-            }}
+            }};
         }}
     }}
 }}");
@@ -138,7 +169,7 @@ namespace {c.RowClass.ContainingNamespace.Name}
 
     public const string Attribute = /* lang=csharp */ @"// <auto-generated/>
 namespace BigQueryMapping{
-    [System.AttributeUsage(SystemAttributeTargets.Class)]
+    [System.AttributeUsage(System.AttributeTargets.Class)]
     public class BigQueryMappedAttribute : System.Attribute
     {
     }

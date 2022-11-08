@@ -3,6 +3,11 @@ using BigQueryMapping;
 
 namespace Example;
 
+public class Program
+{
+    public static void Main(string[] args){}
+}
+
 [BigQueryMapped]
 public partial class MeterReadingEntry
 {
@@ -79,4 +84,12 @@ public partial class MeterReadingEntry
 
     [Column("DPOE_hourly_flowtime_hot_cold")]
     public string? DpoeHourlyFlowTime { get; set; }
+}
+
+public class Test
+{
+    public void ShouldHaveMethod()
+    {
+        var method = MeterReadingEntry.FromBigQueryRow;
+    }
 }
