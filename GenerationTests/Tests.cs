@@ -3,7 +3,7 @@ using BigQueryMapping;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace Tests;
+namespace GenerationTests;
 
 [UsesVerify] // 👈 Adds hooks for Verify into XUnit
 public class BigQueryMapperGeneratorSnapshotTests
@@ -109,7 +109,7 @@ public static class TestHelper
 
         // Create a Roslyn compilation for the syntax tree.
         CSharpCompilation compilation = CSharpCompilation.Create(
-            assemblyName: "Tests",
+            assemblyName: "GenerationTests",
             syntaxTrees: new[] { syntaxTree });
 
         // Create an instance of our EnumGenerator incremental source generator

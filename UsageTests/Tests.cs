@@ -1,11 +1,27 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations.Schema;
 using BigQueryMapping;
 
-namespace Example;
+namespace UsageTests;
 
-public class Program
+public class Tests
 {
-    public static void Main(string[] args){}
+    [Fact]
+    public void ShouldHaveMethod()
+    {
+        var method = typeof(MeterReadingEntry).GetMethod("FromBigQueryRow");
+        Assert.NotNull(method);
+        Assert.Equal(typeof(MeterReadingEntry), method!.ReturnType);
+        Assert.True(method!.IsStatic);
+    }
+    
+    [Fact]
+    public void ShouldImplementInterface()
+    {
+        var @interfaces = typeof(MeterReadingEntry).GetInterfaces();
+        var matchingInterface =
+            @interfaces.FirstOrDefault(i => i.FullName.StartsWith("BigQueryMapping.IBigQueryGenerated"));
+        Assert.NotNull(@matchingInterface);
+    }
 }
 
 [BigQueryMapped]
@@ -86,10 +102,3 @@ public partial class MeterReadingEntry
     public string? DpoeHourlyFlowTime { get; set; }
 }
 
-public class Test
-{
-    public void ShouldHaveMethod()
-    {
-        var method = MeterReadingEntry.FromBigQueryRow;
-    }
-}
