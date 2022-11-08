@@ -15,7 +15,7 @@ public class BigQueryMapperGeneratorSnapshotTests
         var source = @"using System.ComponentModel.DataAnnotations.Schema;
 using BigQueryMapping;
 
-namespace Test;
+namespace Fake.Namespace;
 
 [BigQueryMapped]
 public partial class MeterReadingEntry
