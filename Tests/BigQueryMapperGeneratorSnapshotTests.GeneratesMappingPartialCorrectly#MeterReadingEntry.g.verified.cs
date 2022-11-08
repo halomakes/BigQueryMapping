@@ -4,7 +4,7 @@ namespace Test
 {
     public partial class MeterReadingEntry 
     {
-        public static MeterReadingEntry FromBigQueryRow(Google.Cloud.BigQuery.V2BigQueryRow row)
+        public static MeterReadingEntry FromBigQueryRow(Google.Cloud.BigQuery.V2.BigQueryRow row)
         {
             return new MeterReadingEntry
             {

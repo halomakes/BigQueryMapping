@@ -113,7 +113,7 @@ namespace {c.RowClass.ContainingNamespace.Name}
 {{
     public partial class {c.RowClass.Name} 
     {{
-        public static {c.RowClass.Name} FromBigQueryRow(Google.Cloud.BigQuery.V2BigQueryRow row)
+        public static {c.RowClass.Name} FromBigQueryRow(Google.Cloud.BigQuery.V2.BigQueryRow row)
         {{
             return new {c.RowClass.Name}
             {{");
