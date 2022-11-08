@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BigQueryMapping", "BigQueryMapping\BigQueryMapping.csproj", "{6A1593BA-D303-4562-AD1A-71C7B3387C34}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "Example\Example.csproj", "{53DCC9D8-D2EF-4B97-8A74-B0559175980F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{1CED2673-CFFA-4122-9132-3851B2CECD2B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6A1593BA-D303-4562-AD1A-71C7B3387C34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A1593BA-D303-4562-AD1A-71C7B3387C34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A1593BA-D303-4562-AD1A-71C7B3387C34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A1593BA-D303-4562-AD1A-71C7B3387C34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53DCC9D8-D2EF-4B97-8A74-B0559175980F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53DCC9D8-D2EF-4B97-8A74-B0559175980F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53DCC9D8-D2EF-4B97-8A74-B0559175980F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53DCC9D8-D2EF-4B97-8A74-B0559175980F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CED2673-CFFA-4122-9132-3851B2CECD2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CED2673-CFFA-4122-9132-3851B2CECD2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CED2673-CFFA-4122-9132-3851B2CECD2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CED2673-CFFA-4122-9132-3851B2CECD2B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
