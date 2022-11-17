@@ -14,6 +14,7 @@
         <RepositoryUrl>https://github.com/halomademeapc/BigQueryMapping</RepositoryUrl>
         <RepositoryType>Git</RepositoryType>
         <PackageTags>google,cloud,bigquery</PackageTags>
+        <PackageVersion>1.0.0</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>

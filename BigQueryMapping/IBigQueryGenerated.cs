@@ -2,7 +2,6 @@
 {
     public interface IBigQueryGenerated<TRow>
     {
-        static TRow FromBigQueryRow(Google.Cloud.BigQuery.V2.BigQueryRow row) =>
-            throw new System.NotImplementedException();
+        static abstract TRow FromBigQueryRow(Google.Cloud.BigQuery.V2.BigQueryRow row);
     }
 }

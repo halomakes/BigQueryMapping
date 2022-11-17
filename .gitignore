@@ -350,3 +350,4 @@ MigrationBackup/
 
 .DS_Store
 *.g.received.cs
+.idea/.idea.BigQueryMapper/.idea/
