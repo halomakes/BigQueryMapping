@@ -19,7 +19,7 @@ public class Tests
     {
         var @interfaces = typeof(MeterReadingEntry).GetInterfaces();
         var matchingInterface =
-            @interfaces.FirstOrDefault(i => i.FullName.StartsWith("BigQueryMapping.IBigQueryGenerated"));
+            @interfaces.FirstOrDefault(i => i.FullName!.StartsWith("BigQueryMapping.IBigQueryGenerated"));
         Assert.NotNull(@matchingInterface);
     }
 }

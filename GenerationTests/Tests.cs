@@ -1,5 +1,8 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using BigQueryMapping;
+using BigQueryMapping.Generators;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
@@ -105,24 +108,33 @@ public static class TestHelper
     public static Task Verify(string source)
     {
         // Parse the provided string into a C# syntax tree
-        SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(source);
+        var syntaxTree = CSharpSyntaxTree.ParseText(source);
 
         // Create a Roslyn compilation for the syntax tree.
-        CSharpCompilation compilation = CSharpCompilation.Create(
-            assemblyName: "GenerationTests",
-            syntaxTrees: new[] { syntaxTree });
+        var compilation = CSharpCompilation.Create("compilation",
+            new[] { syntaxTree },
+            new[]
+            {
+                MetadataReference.CreateFromFile(typeof(BigQueryMappedAttribute).GetTypeInfo().Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(ColumnAttribute).GetTypeInfo().Assembly.Location)
+            },
+            new CSharpCompilationOptions(OutputKind.ConsoleApplication));
 
-        // Create an instance of our EnumGenerator incremental source generator
+        // directly create an instance of the generator
+        // (Note: in the compiler this is loaded from an assembly, and created via reflection at runtime)
         var generator = new BigQueryMapperGenerator();
 
-        // The GeneratorDriver is used to run our generator against a compilation
+        // Create the driver that will control the generation, passing in our generator
         GeneratorDriver driver = CSharpGeneratorDriver.Create(generator);
 
-        // Run the source generator!
-        driver = driver.RunGenerators(compilation);
+        // Run the generation pass
+        // (Note: the generator driver itself is immutable, and all calls return an updated version of the driver that you should use for subsequent calls)
+        driver = driver.RunGeneratorsAndUpdateCompilation(compilation, out var outputCompilation, out var diagnostics);
 
+        var runResult = driver.GetRunResult();
+        
         // Use verify to snapshot test the source generator output!
-        return Verifier.Verify(driver);
+        return Verifier.Verify(runResult);
     }
 }
 

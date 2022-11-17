@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerationTests", "Generati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsageTests", "UsageTests\UsageTests.csproj", "{8C70CC41-1663-47F4-92CA-0D41F30EBF3B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BigQueryMapping.Generators", "BigQueryMapping.Generators\BigQueryMapping.Generators.csproj", "{AD21EC0B-3354-42F4-A6E9-31483F22BE0C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{8C70CC41-1663-47F4-92CA-0D41F30EBF3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C70CC41-1663-47F4-92CA-0D41F30EBF3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C70CC41-1663-47F4-92CA-0D41F30EBF3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD21EC0B-3354-42F4-A6E9-31483F22BE0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD21EC0B-3354-42F4-A6E9-31483F22BE0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD21EC0B-3354-42F4-A6E9-31483F22BE0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD21EC0B-3354-42F4-A6E9-31483F22BE0C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

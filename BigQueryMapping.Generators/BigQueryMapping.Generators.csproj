@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageVersion>0.0.6-alpha</PackageVersion>
+        <Title>BigQuery Row Mapper</Title>
+        <Authors>Alex Griffith</Authors>
+        <Description>Source generator for mapping big query rows to basic objects</Description>
+        <LangVersion>latest</LangVersion>
+        <AssemblyName>BigQueryMapping.Generators</AssemblyName>
+        <RootNamespace>BigQueryMapping.Generators</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.1" />
+        <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BigQueryMapping\BigQueryMapping.csproj" />
+    </ItemGroup>
+</Project>
