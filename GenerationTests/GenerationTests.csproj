@@ -32,6 +32,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\BigQueryMapping.Generators\BigQueryMapping.Generators.csproj" />
+      <ProjectReference Include="..\BigQueryMapping\BigQueryMapping.csproj" />
     </ItemGroup>
 
 </Project>

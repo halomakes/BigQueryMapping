@@ -10,16 +10,17 @@ using Microsoft.CodeAnalysis.Text;
 namespace BigQueryMapping.Generators;
 
 [Generator]
-public partial class BigQueryMapperGenerator : IIncrementalGenerator
+public class BigQueryMapperGenerator : IIncrementalGenerator
 {
-    [GeneratedRegex(@"^Column\(""(\S+)""", RegexOptions.CultureInvariant | RegexOptions.Compiled,
-        matchTimeoutMilliseconds: 100)]
-    private static partial Regex AttributeConstructorRgx();
+    private static readonly Regex AttributeConstructorRgx = new(@"^Column\(""(\S+)""",RegexOptions.CultureInvariant | RegexOptions.Compiled,
+        matchTimeout: TimeSpan.FromMilliseconds(10));
+
+    private const string AttributeName = "BigQueryMapping.BigQueryMappedAttribute";
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         var classDeclarations = context.SyntaxProvider.ForAttributeWithMetadataName(
-            typeof(BigQueryMappedAttribute).FullName!,
+            AttributeName,
             static (s, _) => s is ClassDeclarationSyntax c && c.AttributeLists.Any(),
             static (ctx, _) => (ClassDeclarationSyntax)ctx.TargetNode);
 
@@ -90,7 +91,7 @@ public partial class BigQueryMapperGenerator : IIncrementalGenerator
                         var attributeSyntax = columnAttribute.ApplicationSyntaxReference?.GetSyntax().GetText();
                         if (attributeSyntax is not null)
                         {
-                            var match = AttributeConstructorRgx().Match(attributeSyntax.ToString());
+                            var match = AttributeConstructorRgx.Match(attributeSyntax.ToString());
                             if (match.Success && match.Groups[1].Success)
                             {
                                 columnName = match.Groups[1].Value;
