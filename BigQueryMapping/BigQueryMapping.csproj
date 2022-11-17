@@ -4,6 +4,16 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <TargetFramework>net7.0</TargetFramework>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Version>1.0.0-alpha</Version>
+        <Title>BigQueryMapping</Title>
+        <Authors>Alex Griffith</Authors>
+        <Description>Core library for BigQueryMapping.  Use with BigQueryMapping.Generators.</Description>
+        <PackageProjectUrl>https://github.com/halomademeapc/BigQueryMapping</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/halomademeapc/BigQueryMapping/blob/main/LICENSE</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/halomademeapc/BigQueryMapping</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
+        <PackageTags>google,cloud,bigquery</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>

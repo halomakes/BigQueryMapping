@@ -6,13 +6,18 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>0.0.6-alpha</PackageVersion>
-        <Title>BigQuery Row Mapper</Title>
+        <PackageVersion>1.0.0-alpha</PackageVersion>
+        <Title>BigQueryMapping.Generators</Title>
         <Authors>Alex Griffith</Authors>
-        <Description>Source generator for mapping big query rows to basic objects</Description>
+        <Description>Source generator for mapping big query rows to basic objects.  Install BigQueryMapping as well.</Description>
         <LangVersion>latest</LangVersion>
         <AssemblyName>BigQueryMapping.Generators</AssemblyName>
         <RootNamespace>BigQueryMapping.Generators</RootNamespace>
+        <PackageProjectUrl>https://github.com/halomademeapc/BigQueryMapping</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/halomademeapc/BigQueryMapping/blob/main/LICENSE</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/halomademeapc/BigQueryMapping</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
+        <PackageTags>google,cloud,bigquery</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
