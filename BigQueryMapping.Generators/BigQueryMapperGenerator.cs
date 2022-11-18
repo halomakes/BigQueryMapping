@@ -12,9 +12,6 @@ namespace BigQueryMapping.Generators;
 [Generator]
 public class BigQueryMapperGenerator : IIncrementalGenerator
 {
-    private static readonly Regex AttributeConstructorRgx = new(@"^Column\(""(\S+)""",RegexOptions.CultureInvariant | RegexOptions.Compiled,
-        matchTimeout: TimeSpan.FromMilliseconds(10));
-
     private const string AttributeName = "BigQueryMapping.BigQueryMappedAttribute";
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
@@ -88,14 +85,9 @@ public class BigQueryMapperGenerator : IIncrementalGenerator
 
                     if (columnAttribute is not null)
                     {
-                        var attributeSyntax = columnAttribute.ApplicationSyntaxReference?.GetSyntax().GetText();
-                        if (attributeSyntax is not null)
+                        if (columnAttribute.ConstructorArguments.First().Value is string name)
                         {
-                            var match = AttributeConstructorRgx.Match(attributeSyntax.ToString());
-                            if (match.Success && match.Groups[1].Success)
-                            {
-                                columnName = match.Groups[1].Value;
-                            }
+                            columnName = name;
                         }
                     }
 

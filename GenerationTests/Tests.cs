@@ -17,6 +17,8 @@ public class BigQueryMapperGeneratorSnapshotTests
         // The source code to test
         var source = @"using System.ComponentModel.DataAnnotations.Schema;
 using BigQueryMapping;
+using System;
+using System.Runtime;
 
 namespace Fake.Namespace;
 
@@ -96,6 +98,7 @@ public partial class MeterReadingEntry
 
     [Column(""DPOE_hourly_flowtime_hot_cold"")]
     public string? DpoeHourlyFlowTime { get; set; }
+}
 ";
 
         // Pass the source code to our helper and snapshot test the output
@@ -111,14 +114,23 @@ public static class TestHelper
         var syntaxTree = CSharpSyntaxTree.ParseText(source);
 
         // Create a Roslyn compilation for the syntax tree.
+        var assemblyPath = Path.GetDirectoryName(typeof(object).Assembly.Location)!;
         var compilation = CSharpCompilation.Create("compilation",
             new[] { syntaxTree },
             new[]
             {
-                MetadataReference.CreateFromFile(typeof(BigQueryMappedAttribute).GetTypeInfo().Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(ColumnAttribute).GetTypeInfo().Assembly.Location)
+                MetadataReference.CreateFromFile(Path.Combine(assemblyPath, "mscorlib.dll")),
+                MetadataReference.CreateFromFile(Path.Combine(assemblyPath, "System.dll")),
+                MetadataReference.CreateFromFile(Path.Combine(assemblyPath, "System.Core.dll")),
+                MetadataReference.CreateFromFile(Path.Combine(assemblyPath, "System.Runtime.dll")),
+                MetadataReference.CreateFromFile(typeof(object).GetTypeInfo().Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(ColumnAttribute).GetTypeInfo().Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(BigQueryMappedAttribute).GetTypeInfo().Assembly.Location)
             },
-            new CSharpCompilationOptions(OutputKind.ConsoleApplication));
+            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+
+        var diag = compilation.GetDiagnostics();
+        Assert.Empty(diag.Where(d => d.Severity == DiagnosticSeverity.Error));
 
         // directly create an instance of the generator
         // (Note: in the compiler this is loaded from an assembly, and created via reflection at runtime)
@@ -132,7 +144,7 @@ public static class TestHelper
         driver = driver.RunGeneratorsAndUpdateCompilation(compilation, out var outputCompilation, out var diagnostics);
 
         var runResult = driver.GetRunResult();
-        
+
         // Use verify to snapshot test the source generator output!
         return Verifier.Verify(runResult);
     }

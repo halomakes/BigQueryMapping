@@ -6,7 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>1.0.0</PackageVersion>
+        <PackageVersion>1.0.1</PackageVersion>
         <Title>BigQueryMapping.Generators</Title>
         <Authors>Alex Griffith</Authors>
         <Description>Source generator for mapping big query rows to basic objects.  Install BigQueryMapping as well.</Description>
