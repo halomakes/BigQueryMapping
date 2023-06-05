@@ -122,9 +122,10 @@ namespace {c.RowClass.ContainingNamespace.ToDisplayString()}
             {
                 basePropertyType = basePropertyType.Substring(default, basePropertyType.Length - 1);
             }
+            var isNullable = !property.Type.IsValueType || property.NullableAnnotation == NullableAnnotation.Annotated;
 
             sb.Append($@"
-                {property.Name} = row[""{columnName}""] is {basePropertyType} {tempName} ? {tempName} : default,");
+                {property.Name} = row[""{columnName}""] is {basePropertyType} {tempName} ? {tempName} : {(isNullable ? "null" : "default")},");
         }
 
         sb.Append($@"

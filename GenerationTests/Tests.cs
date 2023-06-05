@@ -85,6 +85,8 @@ public partial class MeterReadingEntry
 
     [Column(""Red_Leak_Gallons"")] public double? UrgentLeakGallons { get; set; }
 
+    [Column(""Something"")] public double NonNullableProperty { get; set; }
+
     [Column(""Latest_Leak_Status"")] public string? LatestLeakStatus { get; set; }
 
     [Column(""duration_since_last_reading"")]
